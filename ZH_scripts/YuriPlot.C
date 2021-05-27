@@ -19,7 +19,7 @@ bool AddCMS( TCanvas* C )
 {
 //CMS STANDARD
   TString CMSText = "CMS";
-  TString extraText   = "Preliminary";
+  TString extraText   = "";//"Preliminary";
   TString lumiText = "117 fb^{-1} (13 TeV)";
   C->cd();
   float lumix = 0.955;
@@ -180,14 +180,14 @@ void YuriPlot(){
   total->SetBinError(1, 1518.73);
   total->SetBinError(7, 1.14531);
 
-  Data->GetXaxis()->SetBinLabel(8, "SR");
-  Data->GetXaxis()->SetBinLabel(1, "VR1");
-  Data->GetXaxis()->SetBinLabel(2, "VR2");
-  Data->GetXaxis()->SetBinLabel(3, "VR3");
-  Data->GetXaxis()->SetBinLabel(4, "VR4");
-  Data->GetXaxis()->SetBinLabel(5, "VR5");
-  Data->GetXaxis()->SetBinLabel(6, "VR6");
-  Data->GetXaxis()->SetBinLabel(7, "VR7");
+  Data->GetXaxis()->SetBinLabel(8, "SS");
+  Data->GetXaxis()->SetBinLabel(1, "VS1");
+  Data->GetXaxis()->SetBinLabel(2, "VS2");
+  Data->GetXaxis()->SetBinLabel(3, "VS3");
+  Data->GetXaxis()->SetBinLabel(4, "VS4");
+  Data->GetXaxis()->SetBinLabel(5, "VS5");
+  Data->GetXaxis()->SetBinLabel(6, "VS6");
+  Data->GetXaxis()->SetBinLabel(7, "VS7");
 
   //cosmetics for light
   light->SetFillColor(kViolet+2);
@@ -291,7 +291,8 @@ void YuriPlot(){
   t2.SetTextColor(kBlack);
   t2.SetTextFont(lumifont);
   t2.SetTextSize(0.85*cmsSize);
-  t2.DrawLatex(-0.17, 5e10,"#bf{#it{#Beta}}(H #rightarrow SS) = 20%");
+  //t2.DrawLatex(-0.17, 5e10,"#bf{#it{#Beta}}(#PH#to#mathrm{S}#mathrm{S}) = 20%");
+  t2.DrawLatex(-0.17, 5e10,"#bf{#it{#Beta}}(H#rightarrow SS) = 20%");
 
   t.Draw();
   t2.Draw();
@@ -365,14 +366,14 @@ void YuriPlot(){
  // pulls->SetBinContent(1,0.936526);
  // pulls->SetBinContent(7,0.364139);
   
-  pulls->GetXaxis()->SetBinLabel(8, "SR");
-  pulls->GetXaxis()->SetBinLabel(1, "VR1");
-  pulls->GetXaxis()->SetBinLabel(2, "VR2");
-  pulls->GetXaxis()->SetBinLabel(3, "VR3");
-  pulls->GetXaxis()->SetBinLabel(4, "VR4");
-  pulls->GetXaxis()->SetBinLabel(5, "VR5");
-  pulls->GetXaxis()->SetBinLabel(6, "VR6");
-  pulls->GetXaxis()->SetBinLabel(7, "VR7");
+  pulls->GetXaxis()->SetBinLabel(8, "SS");
+  pulls->GetXaxis()->SetBinLabel(1, "VS1");
+  pulls->GetXaxis()->SetBinLabel(2, "VS2");
+  pulls->GetXaxis()->SetBinLabel(3, "VS3");
+  pulls->GetXaxis()->SetBinLabel(4, "VS4");
+  pulls->GetXaxis()->SetBinLabel(5, "VS5");
+  pulls->GetXaxis()->SetBinLabel(6, "VS6");
+  pulls->GetXaxis()->SetBinLabel(7, "VS7");
 
 
   //ratio->Sumw2();
