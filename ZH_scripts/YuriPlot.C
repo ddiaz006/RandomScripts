@@ -190,8 +190,8 @@ void YuriPlot(){
   Data->GetXaxis()->SetBinLabel(7, "VS7");
 
   //cosmetics for light
-  light->SetFillColor(kViolet+2);
-  light->SetLineColor(kViolet+2);
+  light->SetFillColor(kRed-8);
+  light->SetLineColor(kRed-8);
   //cosmetics for heavy
   heavy->SetFillColor(kOrange+6);
   heavy->SetLineColor(kOrange+6);
@@ -243,8 +243,10 @@ void YuriPlot(){
 
   //Plot Stack Here
   stack->Draw();
-  signal_55->Draw("hist sames");
+  stack->GetYaxis()->SetTitle("Events");
+  stack->GetYaxis()->SetTitleSize( 0.5*axisTitleSizeRatioY );
   signal_15->Draw("hist sames");
+  signal_55->Draw("hist sames");
   data->Draw("P sames");
   TH1F* ratio  = new TH1F( *Data );
   TH1F* ratio2 = new TH1F( *Data );
@@ -263,7 +265,7 @@ void YuriPlot(){
   leg->SetTextSize(0.06);
   leg->AddEntry( Data, "Data", "lep" );
   leg->AddEntry( light, "Z/#gamma^{*}", "f" );
-  leg->AddEntry( heavy, "t#bar{t}+t", "f" );
+  leg->AddEntry( heavy, "t#bar{t} and single top", "f" );
   leg->AddEntry( other, "Other", "f" );
   leg->AddEntry( ratio2, "Background pred.", "lfp" );
 
@@ -307,13 +309,13 @@ void YuriPlot(){
   pad2->Draw();
   pad2->cd();
 
-  signal_55->SetLineColor(kPink-9);
+  signal_55->SetLineColor(kRed);
   signal_55->SetLineWidth(4);
-  signal_55->SetLineStyle(2);
+  signal_55->SetLineStyle(5);
   signal_55->Scale(0.20);///0.0371);
   signal_55->SetStats(false);
   signal_55->SetTitle("");
-  signal_15->SetLineColor(kTeal+2);
+  signal_15->SetLineColor(kTeal+3);
   signal_15->SetLineWidth(4);
   signal_15->SetLineStyle(9);
   signal_15->Scale(0.20);///0.0371);
