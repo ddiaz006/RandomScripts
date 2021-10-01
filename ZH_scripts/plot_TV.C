@@ -66,6 +66,12 @@ void plot_TV( TString path, TString infileName_, Bool_t dolog, TString s_lumi, T
  canvas->Clear();
  canvas->cd();
 
+ TLatex lumi;// = new TText(1,1,"") ;
+ lumi.SetTextSize(0.05);
+ lumi.SetTextColor(kBlack);
+ lumi.SetTextAlign(31);
+ lumi.SetTextFont(42);
+ 
  TPad *plotpad  = new TPad("plotpad", "plotpad", 0, 0., 1, 1);
  //if(drawData) i
  plotpad->SetBottomMargin(0.12);
@@ -95,11 +101,12 @@ void plot_TV( TString path, TString infileName_, Bool_t dolog, TString s_lumi, T
  extra2->SetTextAlign(11);
  extra2->SetTextFont(62);
 
- TText* lumi = new TText(1,1,"") ;
- lumi->SetTextSize(0.05);
- lumi->SetTextColor(kBlack);
- lumi->SetTextAlign(31);
- lumi->SetTextFont(42);
+// TText* lumi = new TText(1,1,"") ;
+// lumi->SetTextSize(0.05);
+// lumi->SetTextColor(kBlack);
+// lumi->SetTextAlign(31);
+// lumi->SetTextFont(42);
+
 
 
 
@@ -285,17 +292,24 @@ h_Sig_MS55ct1000->Scale(1.0/h_Sig_MS55ct1000->Integral(0,-1));
        sigleg->AddEntry(h_Sig_MS55ct1000  , "c#tau_{S} = 1000 mm", "l");
 
      TLegend *leg;
-     leg = new TLegend(0.65,0.67,0.9,0.72);
+     leg = new TLegend(0.65,0.64,0.9,0.72);
      leg->SetBorderSize(0);
      leg->SetNColumns(1);
      leg->SetFillColor(kWhite);
-     //leg->AddEntry(h_bkgtotal     , "MC Background.", "f");
-     leg->AddEntry(h_Data     , "Data", "lp");
+     leg->AddEntry(h_Data     , "Data", "pe");
 
+     //TMarker *m_data = new TMarker(0.65, 0.9, 20);
+     TMarker *m_data = new TMarker(0.68135, 4.785, 20);
+     //std::cout<<"Here: "<<canvas->GetWindowTopX()<<std::endl;
+     //std::cout<<"Here: "<<canvas->GetWindowTopY()<<std::endl;
+     //std::cout<<"Here: "<<plotpad->GetAbsXlowNDC()<<std::endl;
+     //std::cout<<"Here: "<<plotpad->GetAbsYlowNDC()<<std::endl;
+     m_data->SetMarkerStyle(20);
+     m_data->SetMarkerSize(2);
 
      leg->Draw();
      sigleg->Draw();
-
+     m_data->Draw();
      Double_t ymax;
      ymax = std::max(h_Data->GetMaximum(), h_bkgtotal->GetMaximum() );
      //ymax = h_bkgtotal->GetMaximum() ;
@@ -318,9 +332,13 @@ h_Sig_MS55ct1000->Scale(1.0/h_Sig_MS55ct1000->Integral(0,-1));
      }    
 
      h_Data->SetMaximum(1.4);    
+     h_Sig_MS55ct1->SetMaximum(1.4);
+     if(dolog &&  infileName.Contains("Alpha") )h_Sig_MS55ct1->SetMinimum(1.0e-3);    
+     if(dolog &&  infileName.Contains("IPSig") )h_Sig_MS55ct1->SetMinimum(2.0e-3);    
+     if(dolog &&  infileName.Contains("TrackAngle") )h_Sig_MS55ct1->SetMinimum(1.5e-3);    
  
-     h_Sig_MS55ct1   ->SetLineColor(kGreen);
-     h_Sig_MS55ct10  ->SetLineColor(kOrange);
+     h_Sig_MS55ct1   ->SetLineColor(kRed);
+     h_Sig_MS55ct10  ->SetLineColor(kTeal+4);
      h_Sig_MS55ct100 ->SetLineColor(kViolet);
      h_Sig_MS55ct1000->SetLineColor(kBlue);
      
@@ -328,29 +346,70 @@ h_Sig_MS55ct1000->Scale(1.0/h_Sig_MS55ct1000->Integral(0,-1));
      h_Sig_MS55ct10  ->SetLineWidth(4);
      h_Sig_MS55ct100 ->SetLineWidth(4);
      h_Sig_MS55ct1000->SetLineWidth(4);
+     
+     h_Sig_MS55ct1   ->SetLineStyle(1);
+     h_Sig_MS55ct10  ->SetLineStyle(1);
+     h_Sig_MS55ct100 ->SetLineStyle(1);
+     h_Sig_MS55ct1000->SetLineStyle(1);
+
 
 
       plotpad->cd();
-       if     ( infileName.Contains("TrackAngle") ) h_bkgtotal->SetTitle("log_{10}(#hat{#Theta}^{2D})");
-       else if( infileName.Contains("IPSig") )      h_bkgtotal->SetTitle("log_{10}(#hat{IP}^{2D}_{sig})");
+       if     ( infileName.Contains("TrackAngle") ) h_bkgtotal->SetTitle("#hat{#Theta}^{2D}");
+       else if( infileName.Contains("IPSig") )      h_bkgtotal->SetTitle("#hat{IP}^{2D}_{sig}");
        else if( infileName.Contains("Alpha") )      h_bkgtotal->SetTitle("#alpha_{max}");
        if     ( infileName.Contains("Alpha") )      h_bkgtotal->GetXaxis()->SetRangeUser(0.,1.0);
        if     ( infileName.Contains("TrackAngle") ) h_bkgtotal->GetXaxis()->SetRangeUser(-5.,0.25);
        if     ( infileName.Contains("IPSig") )      h_bkgtotal->GetXaxis()->SetRangeUser(-3.,3);
                                                     //h_bkgtotal->GetXaxis()->CenterTitle(kTRUE);
-       if     ( infileName.Contains("TrackAngle") ) h_Data->SetTitle("log_{10}(#hat{#Theta}^{2D})");
-       else if( infileName.Contains("IPSig") )      h_Data->SetTitle("log_{10}(#hat{IP}^{2D}_{sig})");
+       if     ( infileName.Contains("TrackAngle") ) h_Data->SetTitle("#hat{#Theta}^{2D}");
+       else if( infileName.Contains("IPSig") )      h_Data->SetTitle("#hat{IP}^{2D}_{sig}");
        else if( infileName.Contains("Alpha") )      h_Data->SetTitle("#alpha_{max}");
        if     ( infileName.Contains("Alpha") )      h_Data->GetXaxis()->SetRangeUser(0.,1.0);
        if     ( infileName.Contains("TrackAngle") ) h_Data->GetXaxis()->SetRangeUser(-3.25,0.25);
        if     ( infileName.Contains("IPSig") )      h_Data->GetXaxis()->SetRangeUser(-1.5,3.1);
-      
+
+      float g_x [h_Data->GetNbinsX()];  
+      float g_y [h_Data->GetNbinsX()];  
+      float g_ex[h_Data->GetNbinsX()];  
+      float g_ey[h_Data->GetNbinsX()];  
+      for(int i =0; i<h_Data->GetNbinsX(); i++){
+        g_x[i]  = h_Data->GetBinCenter(i+1);
+        g_y[i]  = h_Data->GetBinContent(i+1);
+        g_ex[i] = 0.0;
+        g_ey[i] = h_Data->GetBinError(i+1);
+      }
+      TGraphErrors* g_Data = new TGraphErrors(h_Data->GetNbinsX(), g_x, g_y, g_ex, g_ey);   
+      double x,y;
+      g_Data->GetPoint(5,x,y); 
+      std::cout<<x<<"  "<<y<<std::endl;
+      std::cout<<h_Data->GetBinCenter(6)<<"  "<<h_Data->GetBinContent(6)<<std::endl;
+      if     ( infileName.Contains("Alpha") )      g_Data->GetXaxis()->SetLimits(0.,1.0);
+      if     ( infileName.Contains("TrackAngle") ) g_Data->GetXaxis()->SetLimits(-3.25,0.25);
+      if     ( infileName.Contains("IPSig") )      g_Data->GetXaxis()->SetLimits(-1.5,3.1);
+      if     ( infileName.Contains("Alpha") )      h_Sig_MS55ct1->GetXaxis()->SetRangeUser(0.,1.0);
+      if     ( infileName.Contains("TrackAngle") ) h_Sig_MS55ct1->GetXaxis()->SetRangeUser(-3.25,0.25);
+      if     ( infileName.Contains("IPSig") )      h_Sig_MS55ct1->GetXaxis()->SetRangeUser(-1.5,3.1);
+      g_Data->SetMarkerStyle(20);
+      g_Data->SetMarkerSize(2);
+
+
       //h_bkgtotal->Draw("hist");
       h_Data->Draw("E1");
-      h_Sig_MS55ct1->Draw("hist sames");
+      h_Sig_MS55ct1->Draw("hist");
       h_Sig_MS55ct10->Draw("hist sames");
       h_Sig_MS55ct100->Draw("hist sames");
       h_Sig_MS55ct1000->Draw("hist sames");
+      g_Data->Draw("P sames");
+      TArrow *arrow;
+      TLine *l;//=new TLine(0.6,canvas->GetUymin(),0.6,canvas->GetUymax());
+      if( infileName.Contains("Alpha"))     {arrow = new TArrow(0.45,0.1,0.375,0.1, 0.02); l=new TLine(0.45,canvas->GetUymin(),0.45,0.6*canvas->GetUymax());}
+      if( infileName.Contains("TrackAngle")){arrow = new TArrow(-1.5,0.2,-1.25,0.2, 0.02); l=new TLine(-1.5,canvas->GetUymin(),-1.5,0.6*canvas->GetUymax());}
+      if( infileName.Contains("IPSig"))     {arrow = new TArrow(1.25,0.14,1.5,0.14, 0.02);   l=new TLine(1.25,canvas->GetUymin(),1.25,0.6*canvas->GetUymax());}
+      l->SetLineColor(kBlack);
+      l->Draw();
+      arrow->Draw();
+      gPad->RedrawAxis();
 
   float cmsSize = 0.06;
   float lumifont = 42; 
@@ -359,9 +418,9 @@ h_Sig_MS55ct1000->Scale(1.0/h_Sig_MS55ct1000->Integral(0,-1));
   t.SetTextColor(kBlack);
   t.SetTextFont(lumifont);
   t.SetTextSize(0.6*cmsSize);
-  if( infileName.Contains("Alpha"))      t.DrawLatex(0.1, 0.8,"Signal: ZH; H#rightarrow SS; S#rightarrow bb; M_{S} = 55 GeV");
-  if( infileName.Contains("TrackAngle")) t.DrawLatex(-3.1, 0.8,"Signal: ZH; H#rightarrow SS; S#rightarrow bb; M_{S} = 55 GeV");
-  if( infileName.Contains("IPSig"))      t.DrawLatex(-1.3, 0.8,"Signal: ZH; H#rightarrow SS; S#rightarrow bb; M_{S} = 55 GeV");
+  if( infileName.Contains("Alpha"))      t.DrawLatex(0.1 , 0.9,"Signal: ZH; H#rightarrow SS; S#rightarrow bb; M_{S} = 55 GeV");
+  if( infileName.Contains("TrackAngle")) t.DrawLatex(-3.1, 0.9,"Signal: ZH; H#rightarrow SS; S#rightarrow bb; M_{S} = 55 GeV");
+  if( infileName.Contains("IPSig"))      t.DrawLatex(-1.3, 0.9,"Signal: ZH; H#rightarrow SS; S#rightarrow bb; M_{S} = 55 GeV");
 
        //if     (infileName.Contains("TwoEleZH"))       h_bkgtotal->GetXaxis()->SetTitle("SR (High ZPt):        "      +(TString)h_bkgtotal->GetTitle());
        //else if(infileName.Contains("TwoEleDY"))       h_bkgtotal->GetXaxis()->SetTitle("Z(e^{+}e^{-})_{low-p_{T}}:        "  +(TString)h_bkgtotal->GetTitle());
@@ -386,12 +445,16 @@ h_Sig_MS55ct1000->Scale(1.0/h_Sig_MS55ct1000->Integral(0,-1));
 
      h_bkgtotal->GetXaxis()->SetTitle((TString)h_bkgtotal->GetTitle());
      h_Data->GetXaxis()->SetTitle((TString)h_Data->GetTitle());
+     h_Sig_MS55ct1->GetXaxis()->SetTitle((TString)h_Data->GetTitle());
      //h_Data->GetXaxis()->SetTitle("Test");
      
-     title->DrawTextNDC(0.12,0.91,"CMS");
-     extra->DrawTextNDC(0.28,0.91,"Supplementary");
-     TString lumiText = s_lumi+" fb^{-1} (13 TeV)";
-     lumi->DrawTextNDC(0.9,0.91,s_lumi+"/fb (13 TeV)");
+     title->DrawTextNDC(0.12,0.905,"CMS");
+     //extra->DrawTextNDC(0.28,0.91,"Preliminary");
+     TString lumiText = "117 fb^{-1} (13 TeV)";
+     if     ( infileName.Contains("Alpha"))      lumi.DrawLatex(0.99,1.5,lumiText);
+     else if( infileName.Contains("TrackAngle")) lumi.DrawLatex(0.3,1.5,lumiText);
+     else if( infileName.Contains("IPSig"))      lumi.DrawLatex(3.1,1.5,lumiText);
+     else                                   lumi.DrawLatex(0.99,1.5,lumiText);
 
      h_Data->GetYaxis()->SetTitle("Probability");//"Events (a.u.)");
      h_Data->GetYaxis()->SetTitleSize(40);
@@ -400,6 +463,15 @@ h_Sig_MS55ct1000->Scale(1.0/h_Sig_MS55ct1000->Integral(0,-1));
      h_Data->SetTitle("");
      h_Data->GetXaxis()->SetLabelFont(43); //43 Absolute font size in pixel (precision 3)
      h_Data->GetXaxis()->SetLabelSize(45);//20
+     
+     h_Sig_MS55ct1->GetYaxis()->SetTitle("Probability");//"Events (a.u.)");
+     h_Sig_MS55ct1->GetYaxis()->SetTitleSize(40);
+     h_Sig_MS55ct1->GetYaxis()->SetTitleFont(43);
+     h_Sig_MS55ct1->GetYaxis()->SetTitleOffset(1.2);
+     h_Sig_MS55ct1->SetTitle("");
+     h_Sig_MS55ct1->GetXaxis()->SetLabelFont(43); //43 Absolute font size in pixel (precision 3)
+     h_Sig_MS55ct1->GetXaxis()->SetLabelSize(45);//20
+
 
      h_bkgtotal->GetYaxis()->SetTitle("Events (a.u.)");
      h_bkgtotal->GetYaxis()->SetTitleSize(40);
@@ -415,8 +487,15 @@ h_Sig_MS55ct1000->Scale(1.0/h_Sig_MS55ct1000->Integral(0,-1));
      if( infileName.Contains("IPSig")) {h_Data->GetXaxis()->SetTitleSize(0.05); h_Data->GetXaxis()->SetTitleOffset(1.0);}
      if( infileName.Contains("Angle")) {h_Data->GetXaxis()->SetTitleSize(0.05); h_Data->GetXaxis()->SetTitleOffset(1.0);}
      h_Data->GetYaxis()->SetTitleSize(50);
+
+     if( infileName.Contains("Alpha")) {h_Sig_MS55ct1->GetXaxis()->SetTitleSize(0.07); h_Sig_MS55ct1->GetXaxis()->SetTitleOffset(0.8);}
+     if( infileName.Contains("IPSig")) {h_Sig_MS55ct1->GetXaxis()->SetTitleSize(0.05); h_Sig_MS55ct1->GetXaxis()->SetTitleOffset(1.0);}
+     if( infileName.Contains("Angle")) {h_Sig_MS55ct1->GetXaxis()->SetTitleSize(0.05); h_Sig_MS55ct1->GetXaxis()->SetTitleOffset(1.0);}
+     h_Sig_MS55ct1->GetYaxis()->SetTitleSize(50);
      plotpad->Update();
      canvas->Update();
+     std::cout<<"Here2: "<<canvas->GetWindowTopX()<<std::endl;
+     std::cout<<"Here2: "<<canvas->GetWindowTopY()<<std::endl;
 
      if(infileName_.Contains("CaloJetTag")) {
        if(dolog) canvas->SaveAs("SigPlots_2/"+infileName_+"_log.png");

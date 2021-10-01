@@ -86,9 +86,19 @@ void YuriPlot(){
   TH1F* light = new TH1F("light", "light", 8, -0.5, 7.5);
   TH1F* other = new TH1F("other", "other", 8, -0.5, 7.5);
   TH1F* total = new TH1F("total", "total", 8, -0.5, 7.5);
+  TH1F* signal_4d_55= new TH1F("signal_4d_55", "signal_4d_55", 8, -0.5, 7.5);
   TH1F* signal_55= new TH1F("signal_55", "signal_55", 8, -0.5, 7.5);
   TH1F* signal_15= new TH1F("signal_15", "signal_15", 8, -0.5, 7.5);
   THStack* stack = new THStack( "stack" , "stack" );
+
+  signal_4d_55->SetBinContent(8,204.399); signal_55->SetBinError(8,0.0);
+  signal_4d_55->SetBinContent(3,26.7788); signal_55->SetBinError(3,0.0);
+  signal_4d_55->SetBinContent(4,6.63534); signal_55->SetBinError(4,0.0);
+  signal_4d_55->SetBinContent(2,172.864); signal_55->SetBinError(2,0.0);
+  signal_4d_55->SetBinContent(5,0.0);       signal_55->SetBinError(5,0.0);
+  signal_4d_55->SetBinContent(6,0.0);       signal_55->SetBinError(6,0.0);
+  signal_4d_55->SetBinContent(1,56.7891);  signal_55->SetBinError(1,0.0);
+  signal_4d_55->SetBinContent(7,0.0);       signal_55->SetBinError(7,0.0);
 
   signal_55->SetBinContent(8,168.02626); signal_55->SetBinError(8,0.0);
   signal_55->SetBinContent(3,14.647618); signal_55->SetBinError(3,0.0);
@@ -247,6 +257,7 @@ void YuriPlot(){
   stack->GetYaxis()->SetTitleSize( 0.5*axisTitleSizeRatioY );
   signal_15->Draw("hist sames");
   signal_55->Draw("hist sames");
+  signal_4d_55->Draw("hist sames");
   data->Draw("P sames");
   TH1F* ratio  = new TH1F( *Data );
   TH1F* ratio2 = new TH1F( *Data );
@@ -271,12 +282,13 @@ void YuriPlot(){
 
   leg->Draw();
 
-  TLegend *sigleg = new TLegend(0.18,0.63,0.63,0.8);
+  TLegend *sigleg = new TLegend(0.18,0.58,0.63,0.75);
   sigleg->SetBorderSize(0);
   sigleg->SetFillColor(kWhite);
   sigleg->AddEntry((TObject*)0,    "","" ) ;
-  sigleg->AddEntry(signal_55, "M_{S} = 55 GeV ", "l" ) ;
-  sigleg->AddEntry(signal_15, "M_{S} = 15 GeV ", "l" ) ;
+  sigleg->AddEntry(signal_4d_55, "M_{S#rightarrowdd} = 55 GeV ", "l" ) ;
+  sigleg->AddEntry(signal_55, "M_{S#rightarrowbb} = 55 GeV ", "l" ) ;
+  sigleg->AddEntry(signal_15, "M_{S#rightarrowbb} = 15 GeV ", "l" ) ;
   sigleg->Draw();
 
   float extraOverCmsTextSize  = 0.76;
@@ -288,7 +300,8 @@ void YuriPlot(){
   t.SetTextColor(kBlack);
   t.SetTextFont(lumifont);
   t.SetTextSize(0.85*cmsSize);
-  t.DrawLatex(-0.15, 1e12,"ZH; H#rightarrow SS; S#rightarrow bb; c#tau_{S} = 20 mm");
+  //t.DrawLatex(-0.15, 1e12,"ZH; H#rightarrow SS; S#rightarrow bb; c#tau_{S} = 20 mm");
+  t.DrawLatex(-0.15, 1e12,"ZH; H#rightarrow SS; c#tau_{S} = 20 mm");
   TLatex t2;
   t2.SetTextColor(kBlack);
   t2.SetTextFont(lumifont);
@@ -308,6 +321,13 @@ void YuriPlot(){
   pad2->SetGridy();
   pad2->Draw();
   pad2->cd();
+  
+  signal_4d_55->SetLineColor(kBlue);
+  signal_4d_55->SetLineWidth(4);
+  signal_4d_55->SetLineStyle(3);
+  signal_4d_55->Scale(0.20);///0.0371);
+  signal_4d_55->SetStats(false);
+  signal_4d_55->SetTitle("");
 
   signal_55->SetLineColor(kRed);
   signal_55->SetLineWidth(4);
@@ -315,6 +335,7 @@ void YuriPlot(){
   signal_55->Scale(0.20);///0.0371);
   signal_55->SetStats(false);
   signal_55->SetTitle("");
+
   signal_15->SetLineColor(kTeal+3);
   signal_15->SetLineWidth(4);
   signal_15->SetLineStyle(9);
