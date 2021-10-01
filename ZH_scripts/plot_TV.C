@@ -282,7 +282,8 @@ h_Sig_MS55ct1000->Scale(1.0/h_Sig_MS55ct1000->Integral(0,-1));
      canvas->cd();  
  
    
-     TLegend *sigleg = new TLegend(0.2,0.74,0.9,0.82);
+     TLegend *sigleg = new TLegend(0.125,0.74,0.945,0.82);
+       sigleg->SetTextSize(0.05);
        sigleg->SetBorderSize(0);
        sigleg->SetNColumns(2);
        sigleg->SetFillColor(kWhite);
@@ -393,6 +394,13 @@ h_Sig_MS55ct1000->Scale(1.0/h_Sig_MS55ct1000->Integral(0,-1));
       g_Data->SetMarkerStyle(20);
       g_Data->SetMarkerSize(2);
 
+      h_Data          ->GetXaxis()->SetLabelSize(10);
+      g_Data          ->GetXaxis()->SetLabelSize(10);
+      h_Sig_MS55ct1   ->GetXaxis()->SetLabelSize(10);
+      h_Sig_MS55ct10  ->GetXaxis()->SetLabelSize(10);
+      h_Sig_MS55ct100 ->GetXaxis()->SetLabelSize(10);
+      h_Sig_MS55ct1000->GetXaxis()->SetLabelSize(10);
+
 
       //h_bkgtotal->Draw("hist");
       h_Data->Draw("E1");
@@ -417,10 +425,12 @@ h_Sig_MS55ct1000->Scale(1.0/h_Sig_MS55ct1000->Integral(0,-1));
   TLatex t;
   t.SetTextColor(kBlack);
   t.SetTextFont(lumifont);
-  t.SetTextSize(0.6*cmsSize);
-  if( infileName.Contains("Alpha"))      t.DrawLatex(0.1 , 0.9,"Signal: ZH; H#rightarrow SS; S#rightarrow bb; M_{S} = 55 GeV");
-  if( infileName.Contains("TrackAngle")) t.DrawLatex(-3.1, 0.9,"Signal: ZH; H#rightarrow SS; S#rightarrow bb; M_{S} = 55 GeV");
-  if( infileName.Contains("IPSig"))      t.DrawLatex(-1.3, 0.9,"Signal: ZH; H#rightarrow SS; S#rightarrow bb; M_{S} = 55 GeV");
+  t.SetTextSize(0.72*cmsSize);
+  TBox *b = new TBox(-1.55,0.77,3.15,1.25);
+  b->SetFillColor(kWhite);
+  if( infileName.Contains("Alpha"))      {b->SetX1( 0.01 ); b->SetX2(0.99);b->Draw(); t.DrawLatex(0.025 , 0.9,"Signal: ZH; H#rightarrow SS; S#rightarrow bb; M_{S} = 55 GeV");} 
+  if( infileName.Contains("TrackAngle")) {b->SetX1(-3.25 ); b->SetX2(0.3); b->Draw(); t.DrawLatex(-3.2, 0.9,"Signal: ZH; H#rightarrow SS; S#rightarrow bb; M_{S} = 55 GeV");}
+  if( infileName.Contains("IPSig"))      {b->SetX1(-1.55 ); b->SetX2(3.15);b->Draw(); t.DrawLatex(-1.5, 0.9,"Signal: ZH; H#rightarrow SS; S#rightarrow bb; M_{S} = 55 GeV");}
 
        //if     (infileName.Contains("TwoEleZH"))       h_bkgtotal->GetXaxis()->SetTitle("SR (High ZPt):        "      +(TString)h_bkgtotal->GetTitle());
        //else if(infileName.Contains("TwoEleDY"))       h_bkgtotal->GetXaxis()->SetTitle("Z(e^{+}e^{-})_{low-p_{T}}:        "  +(TString)h_bkgtotal->GetTitle());
@@ -456,31 +466,36 @@ h_Sig_MS55ct1000->Scale(1.0/h_Sig_MS55ct1000->Integral(0,-1));
      else if( infileName.Contains("IPSig"))      lumi.DrawLatex(3.1,1.5,lumiText);
      else                                   lumi.DrawLatex(0.99,1.5,lumiText);
 
+     int size_x_tic = 55;//40
+     float size_y_tic = 0.05;//40
      h_Data->GetYaxis()->SetTitle("Probability");//"Events (a.u.)");
      h_Data->GetYaxis()->SetTitleSize(40);
+     h_Data->GetYaxis()->SetLabelSize(size_y_tic);
      h_Data->GetYaxis()->SetTitleFont(43);
      h_Data->GetYaxis()->SetTitleOffset(1.2);
      h_Data->SetTitle("");
      h_Data->GetXaxis()->SetLabelFont(43); //43 Absolute font size in pixel (precision 3)
-     h_Data->GetXaxis()->SetLabelSize(45);//20
+     h_Data->GetXaxis()->SetLabelSize(size_x_tic);//20
      
      h_Sig_MS55ct1->GetYaxis()->SetTitle("Probability");//"Events (a.u.)");
      h_Sig_MS55ct1->GetYaxis()->SetTitleSize(40);
+     h_Sig_MS55ct1->GetYaxis()->SetLabelSize(size_y_tic);
      h_Sig_MS55ct1->GetYaxis()->SetTitleFont(43);
      h_Sig_MS55ct1->GetYaxis()->SetTitleOffset(1.2);
      h_Sig_MS55ct1->SetTitle("");
      h_Sig_MS55ct1->GetXaxis()->SetLabelFont(43); //43 Absolute font size in pixel (precision 3)
-     h_Sig_MS55ct1->GetXaxis()->SetLabelSize(45);//20
+     h_Sig_MS55ct1->GetXaxis()->SetLabelSize(size_x_tic);//20
 
 
      h_bkgtotal->GetYaxis()->SetTitle("Events (a.u.)");
      h_bkgtotal->GetYaxis()->SetTitleSize(40);
+     h_bkgtotal->GetYaxis()->SetLabelSize(size_y_tic);
      h_bkgtotal->SetTitle("");
      h_bkgtotal->GetYaxis()->SetTitleFont(43);
      h_bkgtotal->GetYaxis()->SetTitleOffset(1.45);
      h_bkgtotal->GetXaxis()->SetTitleOffset(1.45);
      h_bkgtotal->GetXaxis()->SetLabelFont(43); //43 Absolute font size in pixel (precision 3)
-     h_bkgtotal->GetXaxis()->SetLabelSize(35);//20
+     h_bkgtotal->GetXaxis()->SetLabelSize(size_x_tic);//35
 
 
      if( infileName.Contains("Alpha")) {h_Data->GetXaxis()->SetTitleSize(0.07); h_Data->GetXaxis()->SetTitleOffset(0.8);}
